@@ -9,7 +9,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  message=FALSE,
+  warning=FALSE,
+  error=FALSE
 )
 ```
 
@@ -33,6 +36,73 @@ if(!require(devtools)){
 devtools::install_github("evandeilton/rnpextras")
 ```
 
-## Exemplos
+# Exemplos
 
-Trabalhando....
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+## Carregando pacotes
+require(rnpextras)
+if(!require("ISLR")){
+  install.packages("ISLR")
+  require(ISLR)
+}
+
+```
+
+
+## Alguns dados
+```{r}
+data("Credit", package = "ISLR");?Credit
+da <- Credit
+#data("mtcars", package = "datasets")
+#data("iris", package = "datasets")
+#data("penguins", package = "palmerpenguins")
+```
+
+## Descritiva dados numéricos
+
+```{r}
+## Características de uma conjunto de dados
+rnpextras::rnp_atributos(da) %>% 
+  knitr::kable()
+```
+
+## Média artmética simples, geométrica e harmônica 
+
+```{r}
+rnpextras::rnp_media(da$Income)
+```
+
+
+## Resumo descritivo
+```{r}
+rnpextras::rnp_summary(da$Income)
+rnpextras::rnp_summary_all(da)$num
+```
+
+## Correlação em forma tabular e vertical
+```{r}
+rnpextras::rnp_correlacao(da[,c("Age","Income","Limit","Balance")])
+```
+
+# Descritiva dados categóricos
+
+## Tabelas de freqência simples e de dupla entrada
+```{r}
+rnpextras::rnp_freq(da$Gender)
+rnpextras::rnp_2freq(da$Gender, da$Ethnicity)
+rnpextras::rnp_2freq(da$Gender, da$Ethnicity, percents = TRUE)
+```
+
+
+## Sumarização com grupos
+```{r}
+rnpextras::rnp_summary_by(da, variavel = "Income", grupos = "Gender")
+rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student"))
+
+```
+
+
+
+
+
+

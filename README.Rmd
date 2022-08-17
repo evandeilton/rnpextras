@@ -18,37 +18,21 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of rnpextras is to ...
+O objetivo deste pacote é armazenar recusros extras tais como dados e funções consumidos e/ou gerados em minhas práticas
+na linguarem R. Tornar esses recusros públicos é uma forma de ajudar à comunidade de alguma forma, ao disponibilizar 
+códigos úteis e aplicáveis em situações práticas da ciência de dados.
 
-## Installation
+## Instalação
 
-You can install the development version of rnpextras like so:
+Rode os comandos a seguir
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+if(!require(devtolls)){
+  install.packages("devtools")
+}
+devtools::install_github("evandeilton/rnpextras")
 ```
 
-## Example
+## Exemplos
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-library(rnpextras)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+Trabalhando....

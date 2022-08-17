@@ -27,7 +27,7 @@ códigos úteis e aplicáveis em situações práticas da ciência de dados.
 Rode os comandos a seguir
 
 ``` r
-if(!require(devtolls)){
+if(!require(devtools)){
   install.packages("devtools")
 }
 devtools::install_github("evandeilton/rnpextras")

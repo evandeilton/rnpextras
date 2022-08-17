@@ -69,35 +69,44 @@ rnpextras::rnp_atributos(da) %>%
 ## Média artmética simples, geométrica e harmônica 
 
 ```{r}
-rnpextras::rnp_media(da$Income)
+rnpextras::rnp_media(da$Income)  %>% 
+  knitr::kable()
 ```
 
 
 ## Resumo descritivo
 ```{r}
-rnpextras::rnp_summary(da$Income)
-rnpextras::rnp_summary_all(da)$num
+rnpextras::rnp_summary(da$Income) %>% 
+  t() %>% knitr::kable()
+rnpextras::rnp_summary_all(da)$num %>% 
+  knitr::kable()
 ```
 
 ## Correlação em forma tabular e vertical
 ```{r}
-rnpextras::rnp_correlacao(da[,c("Age","Income","Limit","Balance")])
+rnpextras::rnp_correlacao(da[,c("Age","Income","Limit","Balance")])  %>% 
+  knitr::kable()
 ```
 
 # Descritiva dados categóricos
 
 ## Tabelas de freqência simples e de dupla entrada
 ```{r}
-rnpextras::rnp_freq(da$Gender)
-rnpextras::rnp_2freq(da$Gender, da$Ethnicity)
-rnpextras::rnp_2freq(da$Gender, da$Ethnicity, percents = TRUE)
+rnpextras::rnp_freq(da$Gender) %>% 
+  knitr::kable()
+rnpextras::rnp_2freq(da$Gender, da$Ethnicity) %>% 
+  knitr::kable()
+rnpextras::rnp_2freq(da$Gender, da$Ethnicity, percents = TRUE) %>% 
+  knitr::kable()
 ```
 
 
 ## Sumarização com grupos
 ```{r}
-rnpextras::rnp_summary_by(da, variavel = "Income", grupos = "Gender")
-rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student"))
+rnpextras::rnp_summary_by(da, variavel = "Income", grupos = "Gender") %>% 
+  knitr::kable()
+rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student")) %>% 
+  knitr::kable()
 
 ```
 

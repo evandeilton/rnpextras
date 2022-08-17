@@ -1,9 +1,6 @@
 #' Pega string de endereco e separa em rua, numero e complemento
-#'
 #' @author LOPES, J. E.
-#'
 #' @description
-#'
 #' Esta funcao e uma tentativa de organizar o texto de uma string onde em um unico bloco vem endereco, numero e complemento.
 #' Este tipo de string e recebida em bases do Itau.
 #' A logia e a seguinte: Seja a string "R ANTONIO MARCELLO                      24   APTO 34". Esta string tem tres partes:

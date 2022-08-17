@@ -1,0 +1,22 @@
+Package: rnpextras
+Title: Recursos extras do R na Pratica
+Version: 2.2.3
+Authors@R:
+    person(given = "Jose E.",
+           family = "Lopes",
+           role = c("aut", "cre"),
+           email = "evandeilton@gmail.com")
+Description: Esforco para colocar em uma unica fonte todos os codigos gerados pelo nos estudos, aplicacoes praticas, testes e treinamentos dos cursos da série R NA PRATICA.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+LazyDataCompression: bzip2
+RoxygenNote: 7.2.1
+Depends: R (>= 2.10)
+Imports: data.table, rio, validaRA, vroom, stringi, DBI, Hmisc, digest, forecast, dbplyr, dplyr, furrr, future, jsonlite, lubridate, magrittr, purrr, readr, stringr, tibble
+Suggests: tidyverse, RCurl, readxl, plyr, testthat, rlang, tidyr
+Remotes: github::evandeilton/validaRA
+NeedsCompilation: no
+Packaged: 2021-07-12 21:52:07 UTC; evandeilton
+Author: Jose E. Lopes [aut, cre]
+Maintainer: Jose E. Lopes <evandeilton@gmail.com>

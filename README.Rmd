@@ -65,7 +65,7 @@ db$Credit_risk <- relevel(db$Credit_risk, ref = "BAD")
 
 ```{r}
 ## Características de uma conjunto de dados
-rnpextras::rnp_atributos(da) %>% 
+rnpextras::rnp_resumo(da) %>% 
   knitr::kable()
 ```
 

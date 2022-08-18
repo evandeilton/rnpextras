@@ -820,11 +820,54 @@ rnp_descritiva <- function(x, digits = 4){
          maximo  = qq[5],
          devpad  = sd(x, na.rm = TRUE),
          cv      = sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE),
-         N       = length(x)
+         iqr     = stats::IQR(x)
   )
   return(round(o, digits = digits))
 }
 
+#' Resumo de dados
+#' @description
+#' Recebe um objeto qualquer e retorna um resumo dos dados dentro deste objeto
+#' @details
+#' O resumo contém dados descritivos, classes, tipos, numero de missing, etc.
+#' @param x vetor, data.frame ou lista de data.frames
+#' @export
+rnp_resumo <- function(x){
+  if(inherits(x, "array")){
+    x <- as.data.frame(x)
+  }
+  aux <- function(i){
+    p1 <- p2 <- data.frame()
+    if(inherits(i, c("numeric","integer","Date","POSIXct","POSIXt"))){
+      p1 <- data.frame(
+        classe = class(i),
+        tipo = typeof(i),
+        nobs = length(i),
+        ndis = length(unique(i)),
+        nmis = sum(is.na(i)),
+        t(rnp_descritiva(i))
+      )
+    } else {
+      p2 <- data.frame(
+        classe = class(i),
+        tipo = typeof(i),
+        nobs = length(i),
+        ndis = length(unique(i)),
+        nmis = sum(is.na(i))
+      )
+    }
+    dplyr::bind_rows(p1, p2)
+  }
+  if(!is.null(dim(x))){
+    data.frame(var = names(x), purrr::map_df(x, aux))
+  } else {
+    if(inherits(x, c("list"))){
+      data.frame(var = names(x), purrr::map_df(x, aux))
+    } else {
+      aux(x)
+    }
+  }
+}
 
 #' Estatisticas descritivas mais completas
 #' @description Calcula estatisticas descritivas e intervalo de confianca para a media

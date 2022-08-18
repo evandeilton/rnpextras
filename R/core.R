@@ -1259,12 +1259,14 @@ rnp_associacao <- function (x, y) {
 #' @param nquebras total de quebras da base de dados com base na quantidade de pedidos (volume)
 #' @param digits total de digitos para as estatisticas na tabela de saida
 #' @param credito Se TRUE, gera o tabelao em ordem inversa, ou seja maiores escores sao melhores que menores scores. O processo inverso do tabelao de scores de fraude.
-#' @param completa TRUE para determinar o tabelao com informacoes de FRD (22), CBK(32, 33, 34, 36, 43, 103) e SUS (10)
+#' @param completa TRUE para determinar o tabelao com informacoes de valores monetarios
 #' @param exclusoes vetor numerico de codigos de status a excluir da base de dados
-#' @param define_mau vetor de codigos de status a considerar como mau. Padrao de modelagem e (10,22,32,33,34,36,43,103,123,160,161,191,203,204)
+#' @param define_mau vetor de codigos de status a considerar como mau. Padrao c(0, "M", "MAU", "BAD")
 #' @import dplyr purrr
 #' @export
-rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_score = 'score', variavel_valor = NULL, nquebras = 20, define_mau = c(10,22,32,33,34,36,43,103,123,160,161,191,203,204), digits = 4, credito = FALSE, completa = TRUE, exclusoes = NULL){
+rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_score = 'score',
+                              variavel_valor = NULL, nquebras = 20,
+                              define_mau = c(0, "M", "MAU", "BAD"), digits = 4, credito = FALSE, completa = TRUE, exclusoes = NULL){
 
   if(missing(variavel_mau) || missing(variavel_score)||
      is.null(variavel_mau) || is.null(variavel_score)){
@@ -1274,7 +1276,7 @@ rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_
   mlag <- function(x, k) c(rep(0, k), head(x, -k))
 
   define_mau <- if(is.null(define_mau)) {
-    c(10,22,32,33,34,36,43,103,123,160,161,191,203,204)
+    c(0, "M", "MAU", "BAD")
   } else {
     define_mau
   }
@@ -1287,36 +1289,30 @@ rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_
     vz <- rlang::sym(variavel_valor)
     dados %>%
       dplyr::mutate(valor = 0) %>%
-      dplyr::select(!!vx, !!vy, !!vz, dplyr::everything()) %>%
-      dplyr::arrange(!!vx) %>%
-      dplyr::filter(!(!!vy) %in% exclusoes) %>%
-      purrr::set_names(tolower(colnames(.))) %>%
-      dplyr::mutate(s_decisao = !!vx + rnorm(nrow(.), sd = 0.000000001),
+      dplyr::select({{vx}}, {{vy}}, {{vz}}, dplyr::everything()) %>%
+      dplyr::arrange({{vx}}) %>%
+      dplyr::filter(!({{vy}}) %in% exclusoes) %>%
+      #purrr::set_names(tolower(colnames(.))) %>%
+      dplyr::mutate(s_decisao = {{vx}} + rnorm(nrow(.), sd = 0.000000001),
                     quebras = cut(s_decisao,
                                   breaks = quantile(s_decisao, probs = seq(0,1,length.out = nquebras+1)),
                                   labels = 1:(length(quantile(s_decisao,probs = seq(0,1,length.out = nquebras+1)))-1), include.lowest = T),
-                    fl_mau = dplyr::if_else(!!vy %in% define_mau, 1, 0),
-                    fl_frd = dplyr::if_else(!!vy %in% 22, 1, 0),
-                    fl_sus = dplyr::if_else(!!vy %in% 10, 1, 0),
-                    fl_cbk = dplyr::if_else(!!vy %in% c(32, 33, 34, 36, 43, 103), 1, 0),
+                    fl_mau = dplyr::if_else({{vy}} %in% define_mau, 1, 0),
                     fl_tan = 1
       ) %>%
       dplyr::filter(!is.na(quebras))
   } else {
     vz <- rlang::sym(variavel_valor)
     dados %>%
-      dplyr::select(!!vx, !!vy, !!vz, dplyr::everything()) %>%
-      dplyr::arrange(!!vx) %>%
-      dplyr::filter(!(!!vy) %in% exclusoes) %>%
-      purrr::set_names(tolower(colnames(.))) %>%
-      dplyr::mutate(s_decisao = !!vx + rnorm(nrow(.), sd = 0.000000001),
+      dplyr::select({{vx}}, {{vy}}, {{vz}}, dplyr::everything()) %>%
+      dplyr::arrange({{vx}}) %>%
+      dplyr::filter(!({{vy}}) %in% exclusoes) %>%
+      #purrr::set_names(tolower(colnames(.))) %>%
+      dplyr::mutate(s_decisao = {{vx}} + rnorm(nrow(.), sd = 0.000000001),
                     quebras = cut(s_decisao,
                                   breaks = quantile(s_decisao, probs = seq(0,1,length.out = nquebras+1)),
                                   labels = 1:(length(quantile(s_decisao,probs = seq(0,1,length.out = nquebras+1)))-1), include.lowest = T),
-                    fl_mau = dplyr::if_else(!!vy %in% define_mau, 1, 0),
-                    fl_frd = dplyr::if_else(!!vy %in% 22, 1, 0),
-                    fl_sus = dplyr::if_else(!!vy %in% 10, 1, 0),
-                    fl_cbk = dplyr::if_else(!!vy %in% c(32, 33, 34, 36, 43, 103), 1, 0),
+                    fl_mau = dplyr::if_else({{vy}} %in% define_mau, 1, 0),
                     fl_tan = 1
       ) %>%
       dplyr::filter(!is.na(quebras))
@@ -1324,12 +1320,9 @@ rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_
 
   totais <- out %>%
     dplyr::summarise(total_maus = sum(fl_mau, na.rm = TRUE),
-                     total_frd = sum(fl_frd, na.rm = TRUE),
-                     total_sus = sum(fl_sus, na.rm = TRUE),
-                     total_cbk = sum(fl_cbk, na.rm = TRUE),
                      total_bons = sum(fl_tan, na.rm = TRUE) - total_maus,
                      total_geral = sum(fl_tan, na.rm = TRUE),
-                     total_dinheiro = sum(!!vz, na.rm = TRUE)
+                     total_dinheiro = sum({{vz}}, na.rm = TRUE)
     )
 
   tab <- out %>%
@@ -1343,15 +1336,7 @@ rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_
       t_bons = total-t_maus,
       p_maus = dplyr::if_else(totais$total_maus > 0, sum(fl_mau, na.rm = TRUE)/totais$total_maus, 0),
       p_bons = dplyr::if_else(totais$total_bons > 0, (total-sum(fl_mau, na.rm = TRUE))/totais$total_bons, 0),
-
-      t_cbk  = sum(fl_cbk, na.rm = TRUE),
-      t_sus  = sum(fl_sus, na.rm = TRUE),
-      t_frd  = sum(fl_frd, na.rm = TRUE),
-
-      v_total = sum(!!vz, na.rm = TRUE),
-      v_cbk = sum(dplyr::case_when(fl_cbk == 1 ~ !!vz, TRUE ~ 0), na.rm = TRUE),
-      v_frd = sum(dplyr::case_when(fl_frd == 1 ~ !!vz, TRUE ~ 0), na.rm = TRUE),
-      v_sus = sum(dplyr::case_when(fl_sus == 1 ~ !!vz, TRUE ~ 0), na.rm = TRUE),
+      v_total = sum({{vz}}, na.rm = TRUE),
       .groups = "drop"
     )
 
@@ -1378,8 +1363,7 @@ rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_
                   woe = log(odds),
                   iv = woe * (p_maus - p_bons),
                   ks = abs(p_maus_acum - p_bons_acum),
-                  gini = (p_maus_acum + mlag(p_maus_acum, 1)) * (p_bons_acum - mlag(p_bons_acum, 1)),
-                  csi = paste0(round(seq(0, 100, length.out = dplyr::n()+1)[-1]), "%")
+                  gini = (p_maus_acum + mlag(p_maus_acum, 1)) * (p_bons_acum - mlag(p_bons_acum, 1))
     ) %>%
     dplyr::arrange(quebras) %>%
     dplyr::mutate_if(is.numeric, .funs = "round", digits = digits) %>%
@@ -1389,7 +1373,8 @@ rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_
     t3
   } else {
     t3 %>%
-      dplyr::select(quebras, min_score, max_score, total, p_total, t_bons, p_bons, t_maus, p_maus, p_maus_acum, p_bons_acum, odds, woe, iv, ks, csi)
+      dplyr::select(quebras, min_score, max_score, total, p_total, t_bons, p_bons, t_maus, p_maus, p_maus_acum,
+                    p_bons_acum, odds, woe, iv, ks)
   }
   return(out)
 }
@@ -1401,7 +1386,7 @@ rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_
 #' @param variavel_categ nome da variavel de interesse
 #' @param digits total de digitos para as estatisticas na tabela de saida
 #' @param exclusoes vetor numerico de codigos de status a excluir da base de dados
-#' @param define_mau vetor de codigos de status a considerar como mau. Padrao de modelagem e (10,22,32,33,34,36,43,103,123,160,161,191,203,204)
+#' @param define_mau vetor de codigos de status a considerar como mau. Padrao e c(0, "M", "MAU", "BAD")
 #' @import dplyr purrr
 #' @export
 rnp_tabelao_variavel <- function(dados, variavel_mau = "status_id_atual",
@@ -1418,17 +1403,17 @@ rnp_tabelao_variavel <- function(dados, variavel_mau = "status_id_atual",
   }
 
   define_mau <- if(is.null(define_mau)) {
-    c(10,22,32,33,34,36,43,103,123,160,161,191,203,204)
+    c(0, "M", "MAU", "BAD")
   } else {
     define_mau
   }
 
   out <- dados %>%
-    dplyr::select(!!vx, !!vy) %>%
-    dplyr::arrange(!!vx) %>%
-    dplyr::filter(!(!!vy) %in% exclusoes) %>%
-    purrr::set_names(tolower(colnames(.))) %>%
-    dplyr::mutate(fl_mau = dplyr::if_else(!!vy %in% define_mau, 1, 0),
+    dplyr::select({{vx}}, {{vy}}) %>%
+    dplyr::arrange({{vx}}) %>%
+    dplyr::filter(!({{vy}}) %in% exclusoes) %>%
+    #purrr::set_names(tolower(colnames(.))) %>%
+    dplyr::mutate(fl_mau = dplyr::if_else({{vy}} %in% define_mau, 1, 0),
                   fl_tan = 1
     ) %>%
     dplyr::mutate_at(.vars = paste(vx), .funs = "isna")
@@ -1439,7 +1424,7 @@ rnp_tabelao_variavel <- function(dados, variavel_mau = "status_id_atual",
                      total_geral = sum(fl_tan, na.rm = TRUE))
 
   tab <- out %>%
-    dplyr::group_by(!!vx) %>%
+    dplyr::group_by({{vx}}) %>%
     dplyr::summarise(
       total = sum(fl_tan),
       p_total = dplyr::if_else(totais$total_geral > 0, total /totais$total_geral, 0),

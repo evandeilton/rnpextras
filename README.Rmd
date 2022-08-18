@@ -41,18 +41,21 @@ devtools::install_github("evandeilton/rnpextras")
 ```{r, message=FALSE, warning=FALSE, error=FALSE}
 ## Carregando pacotes
 require(rnpextras)
-if(!require("ISLR")){
-  install.packages("ISLR")
-  require(ISLR)
-}
-
+if(!require("fairml")){install.packages("fairml"); require(fairml)}
+if(!require("ISLR")){install.packages("ISLR"); require(ISLR)}
 ```
 
 
 ## Alguns dados
 ```{r}
-data("Credit", package = "ISLR");?Credit
+data("german.credit", package = "fairml")
+data("Credit", package = "ISLR")
+
 da <- Credit
+db <- german.credit
+db$Target <- ifelse(db$Credit_risk == "BAD", 1, 0)
+db$Credit_risk <- relevel(db$Credit_risk, ref = "BAD")
+
 #data("mtcars", package = "datasets")
 #data("iris", package = "datasets")
 #data("penguins", package = "palmerpenguins")
@@ -70,7 +73,7 @@ rnpextras::rnp_atributos(da) %>%
 
 ```{r}
 rnpextras::rnp_media(da$Income)  %>% 
-  knitr::kable()
+  knitr::kable(digits = 3)
 ```
 
 
@@ -79,13 +82,13 @@ rnpextras::rnp_media(da$Income)  %>%
 rnpextras::rnp_summary(da$Income) %>% 
   t() %>% knitr::kable()
 rnpextras::rnp_summary_all(da)$num %>% 
-  knitr::kable()
+  knitr::kable(digits = 3)
 ```
 
 ## Correlação em forma tabular e vertical
 ```{r}
 rnpextras::rnp_correlacao(da[,c("Age","Income","Limit","Balance")])  %>% 
-  knitr::kable()
+  knitr::kable(digits = 3)
 ```
 
 # Descritiva dados categóricos
@@ -93,21 +96,100 @@ rnpextras::rnp_correlacao(da[,c("Age","Income","Limit","Balance")])  %>%
 ## Tabelas de freqência simples e de dupla entrada
 ```{r}
 rnpextras::rnp_freq(da$Gender) %>% 
-  knitr::kable()
+  knitr::kable(digits = 3)
 rnpextras::rnp_2freq(da$Gender, da$Ethnicity) %>% 
-  knitr::kable()
+  knitr::kable(digits = 3)
 rnpextras::rnp_2freq(da$Gender, da$Ethnicity, percents = TRUE) %>% 
-  knitr::kable()
+  knitr::kable(digits = 3)
 ```
 
 
 ## Sumarização com grupos
 ```{r}
 rnpextras::rnp_summary_by(da, variavel = "Income", grupos = "Gender") %>% 
-  knitr::kable()
+  knitr::kable(digits = 3)
 rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student")) %>% 
-  knitr::kable()
+  knitr::kable(digits = 3)
+```
 
+
+# Análise bivariada em dados de Crédito
+
+## Sobre variáveis explicativas (features)
+
+### Tabulação de dados
+```{r}
+rnp_tabelao_variavel(dados = db, 
+                     variavel_mau = "Target", 
+                     variavel_categ = "Purpose",
+                     define_mau = 0) %>% 
+  knitr::kable(digits = 3)
+```
+
+
+### VDI (Variable Deviate Index)
+```{r}
+# Freqências Antes
+tbref <- rnp_freq(db$Gender, digits = 3)
+
+# Freqências Depois
+tbrec <- rnp_freq(sample(db$Gender, size = 250), digits = 3)
+
+# Freqências
+tbref %>% knitr::kable(digits = 3)
+tbrec %>% knitr::kable(digits = 3)
+
+# VDI
+rnp_vdi(tbref, tbrec, total = FALSE) %>% 
+  knitr::kable(digits = 3)
+```
+
+
+## Sobre variáveis resposta (label/target)
+
+```{r}
+## Um modelo Nayve para score de crédito nos dados
+id_amostra <- as.numeric(
+  sample(row.names(db), size = nrow(db) * (2/3))
+)
+## Treino e teste
+treino <- db[id_amostra, ]; treino$Target <- NULL
+teste  <- db[-id_amostra, ]; treino$Target <- NULL
+
+## Ajuste com redução de variáveis por stepwise
+
+fit <- step(glm(Credit_risk ~ ., 
+           family = binomial(link = "logit"),
+           data = treino), direction = "both", trace = FALSE)
+
+## Preditos
+pred_treino <- predict(fit, newdata = treino, type = "response")
+pred_teste  <- predict(fit, newdata = teste, type = "response")
+
+## Junta os dados
+treino_fill <- data.frame(treino, pred_treino)
+teste_fill  <- data.frame(teste, pred_teste)
+```
+
+```{r}
+## Tabela de ganho (gains table) base de treino
+rnp_tabelao_score(dados = treino_fill,
+                  variavel_mau = "Credit_risk", 
+                  variavel_score = "pred_treino", 
+                  define_mau = "BAD",
+                  credito = TRUE,
+                  nquebras = 10) %>% 
+  knitr::kable(digits = 3)
+
+## 
+## Tabela de ganho (gains table) base de teste
+rnp_tabelao_score(dados = teste_fill,
+                  variavel_mau = "Credit_risk", 
+                  variavel_score = "pred_teste", 
+                  define_mau = "BAD",
+                  credito = TRUE,
+                  nquebras = 10) %>% 
+  knitr::kable(digits = 3)
 ```
 
 

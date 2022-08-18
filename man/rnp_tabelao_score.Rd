@@ -10,7 +10,7 @@ rnp_tabelao_score(
   variavel_score = "score",
   variavel_valor = NULL,
   nquebras = 20,
-  define_mau = c(10, 22, 32, 33, 34, 36, 43, 103, 123, 160, 161, 191, 203, 204),
+  define_mau = c(0, "M", "MAU", "BAD"),
   digits = 4,
   credito = FALSE,
   completa = TRUE,
@@ -28,13 +28,13 @@ rnp_tabelao_score(
 
 \item{nquebras}{total de quebras da base de dados com base na quantidade de pedidos (volume)}
 
-\item{define_mau}{vetor de codigos de status a considerar como mau. Padrao de modelagem e (10,22,32,33,34,36,43,103,123,160,161,191,203,204)}
+\item{define_mau}{vetor de codigos de status a considerar como mau. Padrao c(0, "M", "MAU", "BAD")}
 
 \item{digits}{total de digitos para as estatisticas na tabela de saida}
 
 \item{credito}{Se TRUE, gera o tabelao em ordem inversa, ou seja maiores escores sao melhores que menores scores. O processo inverso do tabelao de scores de fraude.}
 
-\item{completa}{TRUE para determinar o tabelao com informacoes de FRD (22), CBK(32, 33, 34, 36, 43, 103) e SUS (10)}
+\item{completa}{TRUE para determinar o tabelao com informacoes de valores monetarios}
 
 \item{exclusoes}{vetor numerico de codigos de status a excluir da base de dados}
 }

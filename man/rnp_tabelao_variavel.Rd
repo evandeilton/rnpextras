@@ -24,7 +24,7 @@ rnp_tabelao_variavel(
 
 \item{exclusoes}{vetor numerico de codigos de status a excluir da base de dados}
 
-\item{define_mau}{vetor de codigos de status a considerar como mau. Padrao de modelagem e (10,22,32,33,34,36,43,103,123,160,161,191,203,204)}
+\item{define_mau}{vetor de codigos de status a considerar como mau. Padrao e c(0, "M", "MAU", "BAD")}
 }
 \description{
 Tabelao para categorias de variaveis presentes ou nao em modelos.

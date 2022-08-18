@@ -32,7 +32,7 @@ recompoe a base dos Cancdelados com a identificacao das transacoes que foram mar
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">rnpextras</a>
 
@@ -85,7 +85,7 @@ A tecnica do parcelamento pode ser compreendida no trabalho de Ash, D e Meester,
 <span>  variavel_score <span class="op">=</span> <span class="st">"score"</span>,</span>
 <span>  variavel_valor <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  nquebras <span class="op">=</span> <span class="fl">20</span>,</span>
-<span>  define_mau <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">22</span>, <span class="fl">32</span>, <span class="fl">33</span>, <span class="fl">34</span>, <span class="fl">36</span>, <span class="fl">43</span>, <span class="fl">103</span>, <span class="fl">123</span>, <span class="fl">160</span>, <span class="fl">161</span>, <span class="fl">191</span>, <span class="fl">203</span>, <span class="fl">204</span><span class="op">)</span>,</span>
+<span>  define_mau <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  credito <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  exclusoes <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -122,8 +122,7 @@ Se nao tiver deixe NULL, padrao.</p></dd>
 
 
 <dt>define_mau</dt>
-<dd><p>vetor de codigos de status a considerar como mau.
-Padrao de modelagem e (10,22,32,33,34,36,43,103,123,160,161,191,203,204)</p></dd>
+<dd><p>vetor de codigos de status a considerar como mau.</p></dd>
 
 
 <dt>digits</dt>

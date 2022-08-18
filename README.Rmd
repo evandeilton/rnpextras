@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 # rnpextras
 
 <!-- badges: start -->
+[![Travis build status](https://travis-ci.com/evandeilton/rnpextras.svg?branch=main)](https://travis-ci.com/evandeilton/rnpextras)
 <!-- badges: end -->
 
 O objetivo deste pacote é armazenar recusros extras tais como dados e funções consumidos e/ou gerados em minhas práticas

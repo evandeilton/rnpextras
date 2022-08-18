@@ -3055,7 +3055,6 @@ rnp_aux_imputation <- function(x, fun = "median") {
 #' sao melhores que menores scores. O processo inverso do tabelao de scores de fraude.
 #' @param exclusoes vetor numerico de codigos de status a excluir da base de dados
 #' @param define_mau vetor de codigos de status a considerar como mau.
-#' Padrao de modelagem e (10,22,32,33,34,36,43,103,123,160,161,191,203,204)
 #' @param return_all se FALSE retorna tabelao dos aprovados, tabelao dos inferidos e
 #' base dos reprovados com marcacao dos inferidos. Caso contrario, retorna apenas
 #' tabelao dos inferidos.
@@ -3084,7 +3083,7 @@ rnp_inferencia_rep_parcelamento <- function(dados_apa,
                                             variavel_score = "score",
                                             variavel_valor = NULL,
                                             nquebras = 20,
-                                            define_mau = c(10, 22, 32, 33, 34, 36, 43, 103, 123, 160, 161, 191, 203,204),
+                                            define_mau = 1,
                                             digits = 4,
                                             credito = FALSE,
                                             exclusoes = NULL,

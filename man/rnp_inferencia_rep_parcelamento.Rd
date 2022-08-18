@@ -11,7 +11,7 @@ rnp_inferencia_rep_parcelamento(
   variavel_score = "score",
   variavel_valor = NULL,
   nquebras = 20,
-  define_mau = c(10, 22, 32, 33, 34, 36, 43, 103, 123, 160, 161, 191, 203, 204),
+  define_mau = 1,
   digits = 4,
   credito = FALSE,
   exclusoes = NULL,
@@ -33,8 +33,7 @@ Se nao tiver deixe NULL, padrao.}
 
 \item{nquebras}{total de quebras da base de dados com base na quantidade de pedidos (volume)}
 
-\item{define_mau}{vetor de codigos de status a considerar como mau.
-Padrao de modelagem e (10,22,32,33,34,36,43,103,123,160,161,191,203,204)}
+\item{define_mau}{vetor de codigos de status a considerar como mau.}
 
 \item{digits}{total de digitos para as estatisticas na tabela de saida}
 

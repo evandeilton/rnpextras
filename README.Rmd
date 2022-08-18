@@ -120,9 +120,9 @@ rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student"
 ### Tabulação de dados
 ```{r}
 rnp_tabelao_variavel(dados = db, 
-                     variavel_mau = "Target", 
-                     variavel_categ = "Purpose",
-                     define_mau = 0) %>% 
+                     variavel_mau = "Credit_risk", 
+                     variavel_categ = "Job",
+                     define_mau = "BAD") %>% 
   knitr::kable(digits = 3)
 ```
 

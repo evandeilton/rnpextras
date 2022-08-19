@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 # rnpextras
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/evandeilton/rnpextras.svg?branch=main)](https://travis-ci.com/evandeilton/rnpextras)
+<!--[![Travis build status](https://travis-ci.com/evandeilton/rnpextras.svg?branch=main)](https://travis-ci.com/evandeilton/rnpextras)-->
 [![R-CMD-check](https://github.com/evandeilton/rnpextras/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/evandeilton/rnpextras/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 

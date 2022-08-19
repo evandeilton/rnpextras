@@ -15,7 +15,7 @@ RoxygenNote: 7.2.1
 Depends: R (>= 2.10)
 Imports: data.table, rio, validaRA, vroom, stringi, DBI, Hmisc, digest, forecast, dbplyr, dplyr, furrr, future, jsonlite, lubridate, magrittr, purrr, readr, stringr, tibble
 Suggests: tidyverse, RCurl, readxl, plyr, testthat, rlang, tidyr
-Remotes: github::evandeilton/validaRA
+Remotes: evandeilton/validaRA@da81da2b7522ca3a18751f7483d69aa985bac7a1
 NeedsCompilation: no
 Packaged: 2021-07-12 21:52:07 UTC; evandeilton
 Author: Jose E. Lopes [aut, cre]

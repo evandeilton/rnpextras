@@ -66,51 +66,41 @@ db$Credit_risk <- relevel(db$Credit_risk, ref = "BAD")
 
 ```{r}
 ## Características de uma conjunto de dados
-rnpextras::rnp_resumo(da) %>% 
-  knitr::kable()
+rnpextras::rnp_resumo(da)
 ```
 
 ## Média artmética simples, geométrica e harmônica 
 
 ```{r}
-rnpextras::rnp_media(da$Income)  %>% 
-  knitr::kable(digits = 3)
+rnpextras::rnp_media(da$Income)
 ```
 
 
 ## Resumo descritivo
 ```{r}
-rnpextras::rnp_summary(da$Income) %>% 
-  t() %>% knitr::kable()
-rnpextras::rnp_summary_all(da)$num %>% 
-  knitr::kable(digits = 3)
+rnpextras::rnp_summary(da$Income) %>% t()
+rnpextras::rnp_summary_all(da)$num
 ```
 
 ## Correlação em forma tabular e vertical
 ```{r}
-rnpextras::rnp_correlacao(da[,c("Age","Income","Limit","Balance")])  %>% 
-  knitr::kable(digits = 3)
+rnpextras::rnp_correlacao(da[,c("Age","Income","Limit","Balance")])
 ```
 
 # Descritiva dados categóricos
 
 ## Tabelas de freqência simples e de dupla entrada
 ```{r}
-rnpextras::rnp_freq(da$Gender) %>% 
-  knitr::kable(digits = 3)
-rnpextras::rnp_2freq(da$Gender, da$Ethnicity) %>% 
-  knitr::kable(digits = 3)
-rnpextras::rnp_2freq(da$Gender, da$Ethnicity, percents = TRUE) %>% 
-  knitr::kable(digits = 3)
+rnpextras::rnp_freq(da$Gender)
+rnpextras::rnp_2freq(da$Gender, da$Ethnicity)
+rnpextras::rnp_2freq(da$Gender, da$Ethnicity, percents = TRUE)
 ```
 
 
 ## Sumarização com grupos
 ```{r}
-rnpextras::rnp_summary_by(da, variavel = "Income", grupos = "Gender") %>% 
-  knitr::kable(digits = 3)
-rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student")) %>% 
-  knitr::kable(digits = 3)
+rnpextras::rnp_summary_by(da, variavel = "Income", grupos = "Gender")
+rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student"))
 ```
 
 
@@ -122,27 +112,25 @@ rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student"
 ```{r}
 rnp_tabelao_variavel(dados = db, 
                      variavel_mau = "Credit_risk", 
-                     variavel_categ = "Gender",
-                     define_mau = "BAD") %>% 
-  knitr::kable(digits = 3)
+                     variavel_categ = "Purpose",
+                     define_mau = "BAD")
 ```
 
 
 ### VDI (Variable Deviate Index)
 ```{r}
 # Freqências Antes
-tbref <- rnp_freq(db$Gender, digits = 3)
+tbref <- rnp_freq(db$Purpose, digits = 3)
 
 # Freqências Depois
-tbrec <- rnp_freq(sample(db$Gender, size = 250), digits = 3)
+tbrec <- rnp_freq(sample(db$Purpose, size = 250), digits = 3)
 
 # Freqências
-tbref %>% knitr::kable(digits = 3)
-tbrec %>% knitr::kable(digits = 3)
+tbref
+tbrec
 
 # VDI
-rnp_vdi(tbref, tbrec, total = FALSE) %>% 
-  knitr::kable(digits = 3)
+rnp_vdi(tbref, tbrec, total = FALSE)
 ```
 
 
@@ -179,8 +167,7 @@ rnp_tabelao_score(dados = treino_fill,
                   variavel_score = "pred_treino", 
                   define_mau = "BAD",
                   credito = TRUE,
-                  nquebras = 10) %>% 
-  knitr::kable(digits = 3)
+                  nquebras = 10)
 
 ## 
 ## Tabela de ganho (gains table) base de teste
@@ -189,8 +176,7 @@ rnp_tabelao_score(dados = teste_fill,
                   variavel_score = "pred_teste", 
                   define_mau = "BAD",
                   credito = TRUE,
-                  nquebras = 10) %>% 
-  knitr::kable(digits = 3)
+                  nquebras = 10)
 ```
 
 

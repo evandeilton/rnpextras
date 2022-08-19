@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/evandeilton/rnpextras.svg?branch=main)](https://travis-ci.com/evandeilton/rnpextras)
+[![R-CMD-check](https://github.com/evandeilton/rnpextras/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/evandeilton/rnpextras/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 O objetivo deste pacote é armazenar recusros extras tais como dados e funções consumidos e/ou gerados em minhas práticas

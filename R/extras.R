@@ -507,7 +507,7 @@ rnp_summary_by <- function(base, variavel, grupos, digits = 3) {
 #' @name dm_curso
 #' @docType data
 #' @author INEP
-#' @references \url{http://inep.gov.br/microdados}
+#' @references \url{https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-da-educacao-superior}
 #' @keywords dm_curso
 #' @examples
 #' require(rnpextras)
@@ -526,7 +526,7 @@ NULL
 #' @name dm_ies
 #' @docType data
 #' @author INEP
-#' @references \url{http://inep.gov.br/microdados}
+#' @references \url{https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-da-educacao-superior}
 #' @keywords dm_ies
 #' @examples
 #' require(rnpextras)
@@ -546,7 +546,7 @@ NULL
 #' @name dm_local
 #' @docType data
 #' @author INEP
-#' @references \url{http://inep.gov.br/microdados}
+#' @references \url{https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-da-educacao-superior}
 #' @keywords dm_local
 #' @examples
 #' require(rnpextras)

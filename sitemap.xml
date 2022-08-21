@@ -103,9 +103,6 @@
     <loc>https://evandeilton.github.io/rnpextras/reference/rnp_check_class_vars.html</loc>
   </url>
   <url>
-    <loc>https://evandeilton.github.io/rnpextras/reference/rnp_check_day.html</loc>
-  </url>
-  <url>
     <loc>https://evandeilton.github.io/rnpextras/reference/rnp_clean_brackets.html</loc>
   </url>
   <url>
@@ -130,6 +127,12 @@
     <loc>https://evandeilton.github.io/rnpextras/reference/rnp_freq.html</loc>
   </url>
   <url>
+    <loc>https://evandeilton.github.io/rnpextras/reference/rnp_gains_table_score.html</loc>
+  </url>
+  <url>
+    <loc>https://evandeilton.github.io/rnpextras/reference/rnp_gains_table_variavel.html</loc>
+  </url>
+  <url>
     <loc>https://evandeilton.github.io/rnpextras/reference/rnp_get_classes_inep.html</loc>
   </url>
   <url>
@@ -143,6 +146,9 @@
   </url>
   <url>
     <loc>https://evandeilton.github.io/rnpextras/reference/rnp_iv.html</loc>
+  </url>
+  <url>
+    <loc>https://evandeilton.github.io/rnpextras/reference/rnp_ks.html</loc>
   </url>
   <url>
     <loc>https://evandeilton.github.io/rnpextras/reference/rnp_ksp.html</loc>
@@ -244,16 +250,7 @@
     <loc>https://evandeilton.github.io/rnpextras/reference/rnp_summary_by.html</loc>
   </url>
   <url>
-    <loc>https://evandeilton.github.io/rnpextras/reference/rnp_tabelao_score.html</loc>
-  </url>
-  <url>
-    <loc>https://evandeilton.github.io/rnpextras/reference/rnp_tabelao_variavel.html</loc>
-  </url>
-  <url>
     <loc>https://evandeilton.github.io/rnpextras/reference/rnp_tabulate.html</loc>
-  </url>
-  <url>
-    <loc>https://evandeilton.github.io/rnpextras/reference/rnp_tamamostra_prop.html</loc>
   </url>
   <url>
     <loc>https://evandeilton.github.io/rnpextras/reference/rnp_try_error.html</loc>

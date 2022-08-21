@@ -172,7 +172,10 @@ rnpextras::rnp_summary_by(da, variavel = "Income", grupos = "Gender")
 #>      IQR    cv
 #> 1 37.975 0.781
 #> 2 35.352 0.779
-rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student"))
+
+rnpextras::rnp_summary_by(da,
+                          variavel = "Income",
+                          grupos = c("Gender", "Student"))
 #>   Gender Student   N     Soma Nmis    Min     Q1  Media Mediana     Q3     Max
 #> 1   Male      No 177 8058.153    0 10.354 20.088 45.526  34.480 58.063 182.728
 #> 2   Male     Yes  16  744.638    0 14.312 19.492 46.540  32.233 50.663 123.299
@@ -192,10 +195,12 @@ rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student"
 ### Tabulação de dados
 
 ``` r
-rnp_tabelao_variavel(dados = db, 
-                     variavel_mau = "Credit_risk", 
-                     variavel_categ = "Purpose",
-                     define_mau = "BAD")
+rnp_gains_table_variavel(
+  dados = db,
+  variavel_mau = "Credit_risk",
+  variavel_categ = "Purpose",
+  define_mau = "BAD"
+)
 #> # A tibble: 10 × 14
 #>    Purpose       total p_total t_maus t_bons p_maus p_bons p_mau…¹ p_bon…²  odds
 #>    <chr>         <dbl>   <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>   <dbl> <dbl>
@@ -237,30 +242,30 @@ tbref
 #> 10             retrainin   9 0.009 1000 1.000
 tbrec
 #>                   classe fa    fr faa   fra
-#> 1               business 26 0.104  26 0.104
-#> 2              car (new) 55 0.220  81 0.324
-#> 3             car (used) 26 0.104 107 0.428
-#> 4    domestic appliances  6 0.024 113 0.452
-#> 5              education 14 0.056 127 0.508
-#> 6  furniture / equipment 46 0.184 173 0.692
-#> 7                 others  5 0.020 178 0.712
-#> 8     radio / television 66 0.264 244 0.976
-#> 9                repairs  5 0.020 249 0.996
-#> 10             retrainin  1 0.004 250 1.000
+#> 1               business 23 0.092  23 0.092
+#> 2              car (new) 63 0.252  86 0.344
+#> 3             car (used) 30 0.120 116 0.464
+#> 4    domestic appliances  7 0.028 123 0.492
+#> 5              education 14 0.056 137 0.548
+#> 6  furniture / equipment 41 0.164 178 0.712
+#> 7                 others  1 0.004 179 0.716
+#> 8     radio / television 64 0.256 243 0.972
+#> 9                repairs  3 0.012 246 0.984
+#> 10             retrainin  4 0.016 250 1.000
 
 # VDI
 rnp_vdi(tbref, tbrec, total = FALSE)
 #>                   classe fa_esperado fr_esperado fa_atual fr_atual    vdi
-#> 1               business          97       0.097       26    0.104 0.0005
-#> 2              car (new)         234       0.234       55    0.220 0.0009
-#> 3             car (used)         103       0.103       26    0.104 0.0000
-#> 4    domestic appliances          12       0.012        6    0.024 0.0083
+#> 1               business          97       0.097       23    0.092 0.0003
+#> 2              car (new)         234       0.234       63    0.252 0.0013
+#> 3             car (used)         103       0.103       30    0.120 0.0026
+#> 4    domestic appliances          12       0.012        7    0.028 0.0136
 #> 5              education          50       0.050       14    0.056 0.0007
-#> 6  furniture / equipment         181       0.181       46    0.184 0.0000
-#> 7                 others          12       0.012        5    0.020 0.0041
-#> 8     radio / television         280       0.280       66    0.264 0.0009
-#> 9                repairs          22       0.022        5    0.020 0.0002
-#> 10             retrainin           9       0.009        1    0.004 0.0041
+#> 6  furniture / equipment         181       0.181       41    0.164 0.0017
+#> 7                 others          12       0.012        1    0.004 0.0088
+#> 8     radio / television         280       0.280       64    0.256 0.0022
+#> 9                repairs          22       0.022        3    0.012 0.0061
+#> 10             retrainin           9       0.009        4    0.016 0.0040
 #>    inferencia
 #> 1  G.Tudo bem
 #> 2  G.Tudo bem
@@ -302,49 +307,53 @@ teste_fill  <- data.frame(teste, pred_teste)
 
 ``` r
 ## Tabela de ganho (gains table) base de treino
-rnp_tabelao_score(dados = treino_fill,
-                  variavel_mau = "Credit_risk", 
-                  variavel_score = "pred_treino", 
-                  define_mau = "BAD",
-                  credito = TRUE,
-                  nquebras = 10)
+rnp_gains_table_score(
+  dados = treino_fill,
+  variavel_mau = "Credit_risk",
+  variavel_score = "pred_treino",
+  define_mau = "BAD",
+  credito = TRUE,
+  nquebras = 10
+)
 #> # A tibble: 10 × 17
 #>    quebras total p_total min_score max_score t_maus t_bons p_maus p_bons v_total
 #>      <dbl> <dbl>   <dbl>     <dbl>     <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>
-#>  1       1    67  0.101     0.0204     0.302     56     11 0.270  0.024        0
-#>  2       2    67  0.101     0.303      0.428     40     27 0.193  0.0588       0
-#>  3       3    66  0.0991    0.435      0.577     26     40 0.126  0.0871       0
-#>  4       4    67  0.101     0.579      0.662     30     37 0.145  0.0806       0
-#>  5       5    66  0.0991    0.664      0.747     20     46 0.0966 0.100        0
-#>  6       6    67  0.101     0.748      0.829     20     47 0.0966 0.102        0
-#>  7       7    66  0.0991    0.829      0.889      6     60 0.029  0.131        0
-#>  8       8    67  0.101     0.890      0.924      5     62 0.0242 0.135        0
-#>  9       9    66  0.0991    0.925      0.963      3     63 0.0145 0.137        0
-#> 10      10    67  0.101     0.964      1          1     66 0.0048 0.144        0
+#>  1       1    67  0.101     0.0447     0.306     54     13 0.276  0.0277       0
+#>  2       2    67  0.101     0.312      0.482     37     30 0.189  0.0638       0
+#>  3       3    66  0.0991    0.484      0.593     30     36 0.153  0.0766       0
+#>  4       4    67  0.101     0.594      0.708     24     43 0.122  0.0915       0
+#>  5       5    66  0.0991    0.708      0.779     18     48 0.0918 0.102        0
+#>  6       6    67  0.101     0.781      0.840     11     56 0.0561 0.119        0
+#>  7       7    66  0.0991    0.840      0.886     11     55 0.0561 0.117        0
+#>  8       8    67  0.101     0.888      0.925      7     60 0.0357 0.128        0
+#>  9       9    66  0.0991    0.925      0.959      3     63 0.0153 0.134        0
+#> 10      10    67  0.101     0.959      0.999      1     66 0.0051 0.140        0
 #> # … with 7 more variables: p_maus_acum <dbl>, p_bons_acum <dbl>, odds <dbl>,
 #> #   woe <dbl>, iv <dbl>, ks <dbl>, gini <dbl>
 
 ## 
 ## Tabela de ganho (gains table) base de teste
-rnp_tabelao_score(dados = teste_fill,
-                  variavel_mau = "Credit_risk", 
-                  variavel_score = "pred_teste", 
-                  define_mau = "BAD",
-                  credito = TRUE,
-                  nquebras = 10)
+rnp_gains_table_score(
+  dados = teste_fill,
+  variavel_mau = "Credit_risk",
+  variavel_score = "pred_teste",
+  define_mau = "BAD",
+  credito = TRUE,
+  nquebras = 10
+)
 #> # A tibble: 10 × 17
 #>    quebras total p_total min_score max_score t_maus t_bons p_maus p_bons v_total
 #>      <dbl> <dbl>   <dbl>     <dbl>     <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>
-#>  1       1    34  0.102     0.0519     0.283     28      6 0.301  0.0249       0
-#>  2       2    33  0.0988    0.285      0.484     15     18 0.161  0.0747       0
-#>  3       3    33  0.0988    0.493      0.609     16     17 0.172  0.0705       0
-#>  4       4    34  0.102     0.610      0.722     12     22 0.129  0.0913       0
-#>  5       5    33  0.0988    0.723      0.809      4     29 0.043  0.120        0
-#>  6       6    33  0.0988    0.810      0.865      5     28 0.0538 0.116        0
-#>  7       7    34  0.102     0.870      0.906      5     29 0.0538 0.120        0
-#>  8       8    33  0.0988    0.906      0.950      3     30 0.0323 0.124        0
-#>  9       9    33  0.0988    0.950      0.975      2     31 0.0215 0.129        0
-#> 10      10    34  0.102     0.975      1          3     31 0.0323 0.129        0
+#>  1       1    34  0.102     0.0518     0.342     22     12 0.212  0.0522       0
+#>  2       2    33  0.0988    0.344      0.472     24      9 0.231  0.0391       0
+#>  3       3    33  0.0988    0.474      0.605     20     13 0.192  0.0565       0
+#>  4       4    34  0.102     0.609      0.709     13     21 0.125  0.0913       0
+#>  5       5    33  0.0988    0.714      0.785      9     24 0.0865 0.104        0
+#>  6       6    33  0.0988    0.785      0.842      6     27 0.0577 0.117        0
+#>  7       7    34  0.102     0.843      0.888      4     30 0.0385 0.130        0
+#>  8       8    33  0.0988    0.888      0.929      2     31 0.0192 0.135        0
+#>  9       9    33  0.0988    0.930      0.969      2     31 0.0192 0.135        0
+#> 10      10    34  0.102     0.970      0.991      2     32 0.0192 0.139        0
 #> # … with 7 more variables: p_maus_acum <dbl>, p_bons_acum <dbl>, odds <dbl>,
 #> #   woe <dbl>, iv <dbl>, ks <dbl>, gini <dbl>
 ```

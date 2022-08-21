@@ -9,7 +9,7 @@ rnp_read(
   type = "fread",
   delim = NULL,
   dec = NULL,
-  try_append = TRUE,
+  try_append = FALSE,
   sep = NULL,
   quote = "\\"",
   escape_backslash = FALSE,

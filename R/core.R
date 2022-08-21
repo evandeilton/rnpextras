@@ -260,7 +260,7 @@ rnp_psi <- function(tab, i = TRUE, cat = FALSE){
 #' @param i parametro para bootstrap (uso interno)
 #' @param cat O retorno pode ser total ou por categoria
 #' @export
-rnp_psi <- function(tab, i = TRUE, cat = FALSE){
+rnp_ks <- function(tab, i = TRUE, cat = FALSE){
   d <- tab[i,]
   d$x <- cumsum(d$x)
   d$y <- cumsum(d$y)
@@ -916,49 +916,6 @@ rnp_shift2 <- function(x, y, digits = 4) {
 }
 
 
-#' Tamanho da amostra por proporcao
-#'
-#' @description
-#' Calcula tamanho da amostra finita ou infinita baseado em proporcao
-#' N = Tamanho do universo finita
-#' Z = E o desvio do valor medio que aceitamos para alcancar o nivel de confianca desejado.
-#' Em funcao do nivel de confianca que buscamos, usaremos um valor determinado que e dado
-#' pela forma da distribuicao de Normal. Os valores mais frequentes sao:
-#' Nivel de confianca 90\% -> Z=1,645
-#' Nivel de confianca 95\% -> Z=1,96
-#' Nivel de confianca 99\% -> Z=2,575
-#' e = E a margem de erro maximo que eu quero admitir (p.e. 5\%)
-#' p = E a proporcao que esperamos encontrar. Este parametro tende confundir
-#' bastante a primeira vista: Como vou saber qual proporcao espero,
-#' se justamente estamos fazendo uma pesquisa para conhecer esta proporcao?
-#' @param N Valor do tamanho da base de dados
-#' @param p E a proporcao que esperamos encontrar. ex 50\% = 1/2 (padrao)
-#' @param z E o desvio do valor medio que aceitamos para alcancar o nivel de confianca desejado. (ex. 25\%)
-#' @param e E a margem de erro maximo que eu quero admitir (p.e. 5\%)
-#' @param infinito se TRUE assume que a populacao e infinita e nao aplica fator de correcao
-#' @return vetor com tamanho da amostra n
-#' @author LOPES, J. L
-#' @export
-rnp_tamamostra_prop <- function(N, p = NULL, z = NULL, e = NULL, infinito = FALSE) {
-  if(is.null(N)) infinito <- TRUE
-  if(is.null(z)) {
-    z <- qnorm(p = 0.975, mean = 0, sd = 1)
-  } else {
-    z <- qnorm(p = z + (1-z)/2, mean = 0, sd = 1)
-  }
-  if(is.null(e)) e <- 0.05
-  if(is.null(p)) p <- 1/2
-
-  if(infinito) {
-    n <- ceiling((z^2*(p*(1-p)))/e^2)
-  } else {
-    divid <- N*z^2*(p*(1-p))
-    divis <- (N-1)*e^2 + z^2*(p*(1-p))
-    n <- ceiling(divid/divis)
-  }
-  return(n)
-}
-
 #' Tamanho da amostra para proporcao
 #'
 #' @description
@@ -1173,7 +1130,7 @@ rnp_media <- function(x, peso = NULL, remove.na = TRUE){
       rownames(o) <- NULL
       o
     } else {
-      stop(cat("No caso de media ponderada, para matriz ou data.frame, os dois objetos precisam ter os mesmo nomes para cada variavel x e para cada peso. Verifique seus dados!\n"))
+      stop(cat("No caso de media ponderada, para matriz ou data.frame, os dois objetos precisam ter os mesmos nomes para cada variavel x e para cada peso. Verifique seus dados!\n"))
     }
   }
   return(out)
@@ -1305,35 +1262,6 @@ converte_to_json <- function(x, file, df_type = "rows", raw_type = "mongo", POSI
   return(invisible(out))
 }
 
-
-#' Dia da semana
-#' @description Funcao para determinar o dia da semana e separar os periodos de extracao de dados
-#' @param x vetor de datas
-#' @param en se quer ver em ingles
-#' @export
-rnp_check_day <- function(x, en = TRUE){
-  o <- iconv(tolower(weekdays(as.Date(as.character(x)), abbreviate = TRUE)), to='ASCII//TRANSLIT')
-  o <- if(en) {
-    dplyr::case_when(o %in% c("sun","dom") ~ "sun",
-                     o %in% c("sat","sab") ~ "sat",
-                     o %in% c("mon","seg") ~ "mon",
-                     o %in% c("tue","ter") ~ "tur",
-                     o %in% c("wed","qua") ~ "wed",
-                     o %in% c("thu","qui") ~ "thu",
-                     o %in% c("fri","sex") ~ "fri", TRUE ~ "nan")
-  } else {
-    dplyr::case_when(o %in% c("sun","dom") ~ "dom",
-                     o %in% c("sat","sab") ~ "sab",
-                     o %in% c("mon","seg") ~ "seg",
-                     o %in% c("tue","ter") ~ "ter",
-                     o %in% c("wed","qua") ~ "qua",
-                     o %in% c("thu","qui") ~ "qui",
-                     o %in% c("fri","sex") ~ "sex", TRUE ~ "nan")
-  }
-  return(o)
-}
-
-
 #' Estatisticas de associacao
 #' @description Funcao para calcular as estatisticas, Qui-Quadrado, V de Cramer e C de contingencia para tabelas de dupla entrada.
 #' @param x variavel 1
@@ -1352,23 +1280,24 @@ rnp_associacao <- function (x, y) {
 }
 
 
-#' Tabelao score
-#' @description Tabelao para faixas de score visao volume de pedidos.
-#' @param dados base de dados com dados com campos necessarios para construir o tabelcao
-#' @param variavel_mau nome da variavel que contem os codigo de status dos pedidos. E.: pedido_status_id. Deve ser numerico.
-#' @param variavel_score nome do campo que possui o score do pedido. Deve ser numerico.
-#' @param variavel_valor nome do campo com valor total do pedido. Deve ser numerico. Se nao tiver deixe NULL, padrao.
+#' Gains table para o score
+#' @description Gera uma tabela de ganho do score com muitas estatísticas úteis para a análise
+#' dos dados de modelos de score baseados em regressão com dados binários.
+#' @param dados base de dados com dados com campos necessarios para construir a tabela
+#' @param variavel_mau nome da variavel que contem os codigo de status dos maus.
+#' @param variavel_score nome do campo que possui o score. Deve ser numerico.
+#' @param variavel_valor nome do campo com valor total em unidades monetárias, se houver. Deve ser numerico. Se nao tiver deixe NULL, padrao.
 #' @param nquebras total de quebras da base de dados com base na quantidade de pedidos (volume)
 #' @param digits total de digitos para as estatisticas na tabela de saida
-#' @param credito Se TRUE, gera o tabelao em ordem inversa, ou seja maiores escores sao melhores que menores scores. O processo inverso do tabelao de scores de fraude.
+#' @param credito Se TRUE, gera tabela em ordem inversa, ou seja maiores escores sao melhores que menores scores. O processo inverso da tabela se aplica a modelos de scores de fraude.
 #' @param completa TRUE para determinar o tabelao com informacoes de valores monetarios
 #' @param exclusoes vetor numerico de codigos de status a excluir da base de dados
 #' @param define_mau vetor de codigos de status a considerar como mau. Padrao c(0, "M", "MAU", "BAD")
 #' @import dplyr purrr
 #' @export
-rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_score = 'score',
-                              variavel_valor = NULL, nquebras = 20,
-                              define_mau = c(0, "M", "MAU", "BAD"), digits = 4, credito = FALSE, completa = TRUE, exclusoes = NULL){
+rnp_gains_table_score <- function(dados, variavel_mau = "status_id_atual", variavel_score = 'score',
+                                  variavel_valor = NULL, nquebras = 20,
+                                  define_mau = c(0, "M", "MAU", "BAD"), digits = 4, credito = FALSE, completa = TRUE, exclusoes = NULL){
 
   if(missing(variavel_mau) || missing(variavel_score)||
      is.null(variavel_mau) || is.null(variavel_score)){
@@ -1481,17 +1410,17 @@ rnp_tabelao_score <- function(dados, variavel_mau = "status_id_atual", variavel_
   return(out)
 }
 
-#' Tabelao variavel
-#' @description Tabelao para categorias de variaveis presentes ou nao em modelos.
-#' @param dados base de dados com dados com campos necessarios para construir o tabelcao
-#' @param variavel_mau nome da variavel que contem os codigo de status dos pedidos. E.: pedido_status_id. Deve ser numerico.
-#' @param variavel_categ nome da variavel de interesse
+#' Gains table visão variavel
+#' @description Tabela de ganhos para categorias de variaveis presentes ou nao em modelos.
+#' @param dados base de dados com dados com campos necessarios para construir a tabela
+#' @param variavel_mau nome da variavel que contem os codigo de status.
+#' @param variavel_categ nome da variavel categórica de interesse.
 #' @param digits total de digitos para as estatisticas na tabela de saida
 #' @param exclusoes vetor numerico de codigos de status a excluir da base de dados
 #' @param define_mau vetor de codigos de status a considerar como mau. Padrao e c(0, "M", "MAU", "BAD")
 #' @import dplyr purrr
 #' @export
-rnp_tabelao_variavel <- function(dados, variavel_mau = "status_id_atual",
+rnp_gains_table_variavel <- function(dados, variavel_mau = "status_id_atual",
  variavel_categ = 'reg_combin', digits = 4, exclusoes = NULL, define_mau = NULL){
 
   vx <- rlang::sym(variavel_categ)
@@ -2011,7 +1940,6 @@ rnp_limpa_cpf_cnpj <- function(doc, fix_na = TRUE) {
 #' @importFrom rio import
 #' @export
 rnp_read_bf_rio <- function(file, ...){
-  #requireNamespace("rio")
   rio::import(file, ...)
 }
 
@@ -2025,7 +1953,6 @@ rnp_read_bf_rio <- function(file, ...){
 #' @importFrom data.table fread
 #' @export
 rnp_read_bf_dt <- function(file, control = rnp_read_control(type = "fread")){
-  #requireNamespace("data.table")
   data.table::fread(input = file, sep = control$delim, dec = control$dec, nrows = control$nrows, quote = control$quote,
                     encoding = control$encoding, header = control$header, skip = control$skip, select = control$select,
                     colClasses = control$colClasses
@@ -2041,7 +1968,6 @@ rnp_read_bf_dt <- function(file, control = rnp_read_control(type = "fread")){
 #' @importFrom readr read_csv2 read_delim
 #' @export
 rnp_read_bf_rd <- function(file, control = rnp_read_control(type = "readr")){
-  #requireNamespace("readr")
   if(is.null(control$delim)){
     readr::read_csv2(file = file, col_names = control$col_names, col_types = control$col_types, locale = control$locale,
                      na = control$na, quote = control$quote, comment = control$comment, trim_ws = control$trim_ws,
@@ -2065,7 +1991,6 @@ rnp_read_bf_rd <- function(file, control = rnp_read_control(type = "readr")){
 #' @importFrom vroom vroom
 #' @export
 rnp_read_bf_vr <- function(file, control = rnp_read_control(type = "vroom")){
-  #requireNamespace("vroom")
   vroom::vroom(file = file, delim = control$delim, quote = control$quote, escape_backslash = control$escape_backslash,
                escape_double = control$escape_double, col_names = control$col_names, col_types = control$col_types,
                locale = control$locale, na = control$na, trim_ws = control$trim_ws, skip = control$skip, col_select = control$col_select,
@@ -2226,7 +2151,7 @@ rnp_read_control <- function(type = "fread", delim = NULL, dec = NULL, try_appen
 #' e <- rnp_read(file = "/teste_02.xls", type = "rio", sheet = 1, range = "a3:j23")
 #' }
 #' @export
-rnp_read <- function(file, type = "fread", delim = NULL, dec = NULL, try_append = TRUE,
+rnp_read <- function(file, type = "fread", delim = NULL, dec = NULL, try_append = FALSE,
                      sep = NULL, quote = "\"", escape_backslash = FALSE,
                      escape_double = TRUE, col_names = TRUE, col_select = NULL,
                      col_types = NULL, encoding = NULL, na = c("", "NA"),
@@ -2342,7 +2267,7 @@ rnp_clean_brackets <- function(x){
 #' @importFrom DBI dbWriteTable dbIsValid dbExistsTable
 #' @importFrom dplyr copy_to
 #' @importFrom dbplyr in_schema
-#' @importFrom data.table `:=` setDT data.table
+#' @importFrom data.table `:=` setDT data.table copy
 #' @importFrom purrr map map_df
 #' @importFrom tibble as_tibble
 #' @export
@@ -2383,17 +2308,6 @@ rnp_db_write <- function(con, data, name, column_types = NULL, schema = "dbo", m
                    temporary = FALSE, overwrite = FALSE, ...)
   }
 
-  # aux_split_data <- function(da, chunk_size){
-  #   nm_base <- colnames(da)
-  #   da[, temp_quebra__ := rnp_cut(.N, nrows = chunk_size)]
-  #   splt <- purrr::map(split(da, da$temp_quebra__), function(i){
-  #     i$temp_quebra__ <- NULL
-  #     tibble::as_tibble(i)
-  #   })
-  #   rm(da)
-  #   return(splt)
-  # }
-
   if(!DBI::dbIsValid(con)){
     stop(cat("log: Conexao perdida, favor reconectar!\n"))
   }
@@ -2419,7 +2333,7 @@ rnp_db_write <- function(con, data, name, column_types = NULL, schema = "dbo", m
   # Parte 1. cria uma base tamanho nrows com os tipos detectados na base total.
   # Parte 2. cria lista com restante da tabelas para subir via insert em lotes pequenos.
   if(!inherits(data, "data.table")){
-    data.table::setDT(data)
+    data <- data.table::setDT(data.table::copy(data))
   }
 
   if(!split_data | method == "copy"){
@@ -2449,16 +2363,11 @@ rnp_db_write <- function(con, data, name, column_types = NULL, schema = "dbo", m
     cat(timestamp(stamp = format(Sys.time(), "%d %b %Y, %A %H:%M:%S"),
                   prefix =  "log: ", suffix = " Processando quebras e preparando para subida ...\n", quiet = TRUE))
     out <- c()
-
-    #splt <- aux_split_data(data, chunk_size)
     splt <- rnp_split_data_table(data, nrows = chunk_size)
-
-    # nm <- names(sort(sapply(names(splt),
-    #                         function(i){max(as.numeric(unlist(strsplit(i, "-"))))})))
 
     P1 <- splt[[1]]
     PN <- splt[-1]
-    #rm(data)
+
     # Gravar parte 01
     {
       query <- paste0(schema, ".", name)
@@ -2596,7 +2505,7 @@ numeric_precision_and_scale <- function(x) {
 }
 
 
-#' Detecta tipos e formata para o SQL Server
+#' Detecta tipos e formata para o SQL
 #'
 #' @description Esta funcao e um trator que vasculha todos os dados do objeto
 #'  informado buscando identificar os tipos de dados e seus tamanhos maximos
@@ -2797,7 +2706,7 @@ rnp_db_types <- function(con, data, sample_size = Inf, parallel = FALSE, aloc_cp
 }
 
 
-#' Preparacao de dados para backtestes
+#' Preparacao de dados para uso geral
 #'
 #' @description Esta funcao trata dados como CPF, CNPJ, CEP, TELEFONE, etc.
 #' com base nas colunas informadas pelo usuario, para salvar no banco de dados.
@@ -3091,7 +3000,7 @@ rnp_inferencia_rep_parcelamento <- function(dados_apa,
                                             seed = 1983) {
 
   # Gera tabelao para a base dos Aprovados/Conhecidos
-  tbapa <- rnpextras::rnp_tabelao_score(dados = dados_apa,
+  tbapa <- rnpextras::rnp_gains_table_score(dados = dados_apa,
                                    variavel_mau = variavel_mau,
                                    variavel_score = variavel_score,
                                    variavel_valor = variavel_valor,
@@ -3160,7 +3069,7 @@ rnp_inferencia_rep_parcelamento <- function(dados_apa,
     ) %>%
     dplyr::arrange(id)
 
-  tbrep <- rnpextras::rnp_tabelao_score(dados = base_rep_inferido,
+  tbrep <- rnpextras::rnp_gains_table_score(dados = base_rep_inferido,
                                    variavel_mau = "status_inferido",
                                    variavel_score = variavel_score,
                                    nquebras = nquebras,
@@ -3193,6 +3102,7 @@ rnp_inferencia_rep_parcelamento <- function(dados_apa,
 #' padrao FALSE.
 #' @param append se TRUE, mantem campo keep_group e junta os dados gerando uma unica tabela. Padrao = FALSE
 #' @return lista de subtabelas
+#' @export
 rnp_split_data_table <- function(x, nrows = 5000, keep_group = FALSE, append = FALSE){
   if(!inherits(x, c("data.frame","data.table","tbl_df", "tbl"))){
     stop(message("cat: passe uma tabela 2 x 2 que nao seja da class 'matrix'"))

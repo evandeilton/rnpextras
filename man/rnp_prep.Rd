@@ -2,7 +2,7 @@
 % Please edit documentation in R/core.R
 \name{rnp_prep}
 \alias{rnp_prep}
-\title{Preparacao de dados para backtestes}
+\title{Preparacao de dados para uso geral}
 \usage{
 rnp_prep(
   data,

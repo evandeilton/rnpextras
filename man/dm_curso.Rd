@@ -18,7 +18,7 @@ require(rnpextras)
 str(dm_curso)
 }
 \references{
-\url{http://inep.gov.br/microdados}
+\url{https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-da-educacao-superior}
 }
 \author{
 INEP

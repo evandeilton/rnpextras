@@ -101,7 +101,10 @@ rnpextras::rnp_2freq(da$Gender, da$Ethnicity, percents = TRUE)
 ## Sumarização com grupos
 ```{r}
 rnpextras::rnp_summary_by(da, variavel = "Income", grupos = "Gender")
-rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student"))
+
+rnpextras::rnp_summary_by(da,
+                          variavel = "Income",
+                          grupos = c("Gender", "Student"))
 ```
 
 
@@ -111,10 +114,12 @@ rnpextras::rnp_summary_by(da, variavel = "Income", grupos = c("Gender","Student"
 
 ### Tabulação de dados
 ```{r}
-rnp_tabelao_variavel(dados = db, 
-                     variavel_mau = "Credit_risk", 
-                     variavel_categ = "Purpose",
-                     define_mau = "BAD")
+rnp_gains_table_variavel(
+  dados = db,
+  variavel_mau = "Credit_risk",
+  variavel_categ = "Purpose",
+  define_mau = "BAD"
+)
 ```
 
 
@@ -163,21 +168,25 @@ teste_fill  <- data.frame(teste, pred_teste)
 
 ```{r}
 ## Tabela de ganho (gains table) base de treino
-rnp_tabelao_score(dados = treino_fill,
-                  variavel_mau = "Credit_risk", 
-                  variavel_score = "pred_treino", 
-                  define_mau = "BAD",
-                  credito = TRUE,
-                  nquebras = 10)
+rnp_gains_table_score(
+  dados = treino_fill,
+  variavel_mau = "Credit_risk",
+  variavel_score = "pred_treino",
+  define_mau = "BAD",
+  credito = TRUE,
+  nquebras = 10
+)
 
 ## 
 ## Tabela de ganho (gains table) base de teste
-rnp_tabelao_score(dados = teste_fill,
-                  variavel_mau = "Credit_risk", 
-                  variavel_score = "pred_teste", 
-                  define_mau = "BAD",
-                  credito = TRUE,
-                  nquebras = 10)
+rnp_gains_table_score(
+  dados = teste_fill,
+  variavel_mau = "Credit_risk",
+  variavel_score = "pred_teste",
+  define_mau = "BAD",
+  credito = TRUE,
+  nquebras = 10
+)
 ```
 
 

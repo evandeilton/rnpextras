@@ -2,7 +2,7 @@
 % Please edit documentation in R/core.R
 \name{rnp_db_types}
 \alias{rnp_db_types}
-\title{Detecta tipos e formata para o SQL Server}
+\title{Detecta tipos e formata para o SQL}
 \usage{
 rnp_db_types(
   con,

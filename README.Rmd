@@ -23,8 +23,8 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/evandeilton/rnpextras/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/evandeilton/rnpextras/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-O objetivo deste pacote é armazenar recusros extras tais como dados e funções consumidos e/ou gerados em minhas práticas
-na linguarem R. Tornar esses recusros públicos é uma forma de ajudar à comunidade de alguma forma, ao disponibilizar 
+O objetivo deste pacote é armazenar recursos extras, tais como dados e funções consumidos e/ou gerados em minhas práticas
+na linguarem R. Tornar esses recursos públicos é uma forma de ajudar a comunidade de alguma forma, ao disponibilizar 
 códigos úteis e aplicáveis em situações práticas da ciência de dados.
 
 ## Instalação
@@ -189,8 +189,11 @@ rnp_gains_table_score(
 )
 ```
 
+# Trabalhando ...
 
-
-
-
+<figure>
+  <span class="centerImage">
+  <img src="https://media4.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" height=450/>
+  <figcaption>Fonte: giphy.com  </figcaption>
+</figure>
 

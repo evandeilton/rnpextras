@@ -9,9 +9,9 @@
 [![R-CMD-check](https://github.com/evandeilton/rnpextras/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/evandeilton/rnpextras/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-O objetivo deste pacote é armazenar recusros extras tais como dados e
+O objetivo deste pacote é armazenar recursos extras, tais como dados e
 funções consumidos e/ou gerados em minhas práticas na linguarem R.
-Tornar esses recusros públicos é uma forma de ajudar à comunidade de
+Tornar esses recursos públicos é uma forma de ajudar a comunidade de
 alguma forma, ao disponibilizar códigos úteis e aplicáveis em situações
 práticas da ciência de dados.
 
@@ -243,28 +243,28 @@ tbref
 tbrec
 #>                   classe fa    fr faa   fra
 #> 1               business 23 0.092  23 0.092
-#> 2              car (new) 63 0.252  86 0.344
-#> 3             car (used) 30 0.120 116 0.464
-#> 4    domestic appliances  7 0.028 123 0.492
-#> 5              education 14 0.056 137 0.548
-#> 6  furniture / equipment 41 0.164 178 0.712
-#> 7                 others  1 0.004 179 0.716
-#> 8     radio / television 64 0.256 243 0.972
-#> 9                repairs  3 0.012 246 0.984
+#> 2              car (new) 58 0.232  81 0.324
+#> 3             car (used) 31 0.124 112 0.448
+#> 4    domestic appliances  3 0.012 115 0.460
+#> 5              education  4 0.016 119 0.476
+#> 6  furniture / equipment 40 0.160 159 0.636
+#> 7                 others  3 0.012 162 0.648
+#> 8     radio / television 77 0.308 239 0.956
+#> 9                repairs  7 0.028 246 0.984
 #> 10             retrainin  4 0.016 250 1.000
 
 # VDI
 rnp_vdi(tbref, tbrec, total = FALSE)
 #>                   classe fa_esperado fr_esperado fa_atual fr_atual    vdi
 #> 1               business          97       0.097       23    0.092 0.0003
-#> 2              car (new)         234       0.234       63    0.252 0.0013
-#> 3             car (used)         103       0.103       30    0.120 0.0026
-#> 4    domestic appliances          12       0.012        7    0.028 0.0136
-#> 5              education          50       0.050       14    0.056 0.0007
-#> 6  furniture / equipment         181       0.181       41    0.164 0.0017
-#> 7                 others          12       0.012        1    0.004 0.0088
-#> 8     radio / television         280       0.280       64    0.256 0.0022
-#> 9                repairs          22       0.022        3    0.012 0.0061
+#> 2              car (new)         234       0.234       58    0.232 0.0000
+#> 3             car (used)         103       0.103       31    0.124 0.0039
+#> 4    domestic appliances          12       0.012        3    0.012 0.0000
+#> 5              education          50       0.050        4    0.016 0.0387
+#> 6  furniture / equipment         181       0.181       40    0.160 0.0026
+#> 7                 others          12       0.012        3    0.012 0.0000
+#> 8     radio / television         280       0.280       77    0.308 0.0027
+#> 9                repairs          22       0.022        7    0.028 0.0014
 #> 10             retrainin           9       0.009        4    0.016 0.0040
 #>    inferencia
 #> 1  G.Tudo bem
@@ -318,16 +318,16 @@ rnp_gains_table_score(
 #> # A tibble: 10 × 17
 #>    quebras total p_total min_score max_score t_maus t_bons p_maus p_bons v_total
 #>      <dbl> <dbl>   <dbl>     <dbl>     <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>
-#>  1       1    67  0.101     0.0447     0.306     54     13 0.276  0.0277       0
-#>  2       2    67  0.101     0.312      0.482     37     30 0.189  0.0638       0
-#>  3       3    66  0.0991    0.484      0.593     30     36 0.153  0.0766       0
-#>  4       4    67  0.101     0.594      0.708     24     43 0.122  0.0915       0
-#>  5       5    66  0.0991    0.708      0.779     18     48 0.0918 0.102        0
-#>  6       6    67  0.101     0.781      0.840     11     56 0.0561 0.119        0
-#>  7       7    66  0.0991    0.840      0.886     11     55 0.0561 0.117        0
-#>  8       8    67  0.101     0.888      0.925      7     60 0.0357 0.128        0
-#>  9       9    66  0.0991    0.925      0.959      3     63 0.0153 0.134        0
-#> 10      10    67  0.101     0.959      0.999      1     66 0.0051 0.140        0
+#>  1       1    67  0.101     0.0362     0.315     53     14 0.270  0.0298       0
+#>  2       2    67  0.101     0.316      0.464     38     29 0.194  0.0617       0
+#>  3       3    66  0.0991    0.465      0.602     38     28 0.194  0.0596       0
+#>  4       4    67  0.101     0.603      0.710     17     50 0.0867 0.106        0
+#>  5       5    66  0.0991    0.713      0.774     14     52 0.0714 0.111        0
+#>  6       6    67  0.101     0.775      0.840     17     50 0.0867 0.106        0
+#>  7       7    66  0.0991    0.842      0.890      9     57 0.0459 0.121        0
+#>  8       8    67  0.101     0.891      0.931      7     60 0.0357 0.128        0
+#>  9       9    66  0.0991    0.931      0.962      2     64 0.0102 0.136        0
+#> 10      10    67  0.101     0.963      0.998      1     66 0.0051 0.140        0
 #> # … with 7 more variables: p_maus_acum <dbl>, p_bons_acum <dbl>, odds <dbl>,
 #> #   woe <dbl>, iv <dbl>, ks <dbl>, gini <dbl>
 
@@ -344,16 +344,26 @@ rnp_gains_table_score(
 #> # A tibble: 10 × 17
 #>    quebras total p_total min_score max_score t_maus t_bons p_maus p_bons v_total
 #>      <dbl> <dbl>   <dbl>     <dbl>     <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>
-#>  1       1    34  0.102     0.0518     0.342     22     12 0.212  0.0522       0
-#>  2       2    33  0.0988    0.344      0.472     24      9 0.231  0.0391       0
-#>  3       3    33  0.0988    0.474      0.605     20     13 0.192  0.0565       0
-#>  4       4    34  0.102     0.609      0.709     13     21 0.125  0.0913       0
-#>  5       5    33  0.0988    0.714      0.785      9     24 0.0865 0.104        0
-#>  6       6    33  0.0988    0.785      0.842      6     27 0.0577 0.117        0
-#>  7       7    34  0.102     0.843      0.888      4     30 0.0385 0.130        0
-#>  8       8    33  0.0988    0.888      0.929      2     31 0.0192 0.135        0
-#>  9       9    33  0.0988    0.930      0.969      2     31 0.0192 0.135        0
-#> 10      10    34  0.102     0.970      0.991      2     32 0.0192 0.139        0
+#>  1       1    34  0.102     0.0312     0.314     24     10 0.231  0.0435       0
+#>  2       2    33  0.0988    0.314      0.450     18     15 0.173  0.0652       0
+#>  3       3    33  0.0988    0.452      0.573     16     17 0.154  0.0739       0
+#>  4       4    34  0.102     0.574      0.660     11     23 0.106  0.1          0
+#>  5       5    33  0.0988    0.661      0.736     13     20 0.125  0.087        0
+#>  6       6    33  0.0988    0.740      0.821      7     26 0.0673 0.113        0
+#>  7       7    34  0.102     0.823      0.870      4     30 0.0385 0.130        0
+#>  8       8    33  0.0988    0.871      0.920      3     30 0.0288 0.130        0
+#>  9       9    33  0.0988    0.922      0.963      6     27 0.0577 0.117        0
+#> 10      10    34  0.102     0.965      0.993      2     32 0.0192 0.139        0
 #> # … with 7 more variables: p_maus_acum <dbl>, p_bons_acum <dbl>, odds <dbl>,
 #> #   woe <dbl>, iv <dbl>, ks <dbl>, gini <dbl>
 ```
+
+# Trabalhando …
+
+<figure>
+<span class="centerImage">
+<img src="https://media4.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" height=450/>
+<figcaption>
+Fonte: giphy.com
+</figcaption>
+</figure>

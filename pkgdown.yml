@@ -2,7 +2,7 @@ pandoc: 2.14.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-08-21T01:37Z
+last_built: 2022-08-24T17:05Z
 urls:
   reference: https://evandeilton.github.io/rnpextras/reference
   article: https://evandeilton.github.io/rnpextras/articles

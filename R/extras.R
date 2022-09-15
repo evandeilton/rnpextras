@@ -1,89 +1,66 @@
-#' Tabela de frequencias dupla entrada
-#' @param x vetor caractere/fator de entrada
-#' @param y vetor caractere/fator de entrada
-#' @param digits total de digitos decimais na saida
-#' @param percents se TRUE, retorna tambem os percentuais de linha e de colunas.
-#' @details faz tabela de dupla entrada com base em dois vetores de entrada.
+#' Tabela de frequencias dupla entrada.
+#' @param data tabela de dados.
+#' @param x nome da variavel x. Obrigatorio.
+#' @param y nome da variavel y. Pode ser NULL.
+#' @param sortclass Se TRUE ordena as categorias de x e/ou y.
+#' @param transpor Se TRUE, faz a transposicao das estatisticas gerando um data.frame vertical.
+#' @details faz tabela de dupla entrada com base no dados de entrada.
 #' @return data.frame
+#' @importFrom dplyr group_by count ungroup mutate sym
+#' @importFrom tidyr pivot_longer
 #' @examples
 #' \dontrun{
 #' require(rnpextras)
-#' data(dm_ies)
-#' rnp_2freq(dm_ies$DESC_TP_CATEGORIA_ADMINISTRATIVA, dm_ies$DESC_TP_MODALIDADE_ENSINO)
+#' data(mtcars)
+#' rnp_2freq(mtcars, "am")
+#' rnp_2freq(mtcars, "am", transpor = TRUE)
+#' rnp_2freq(mtcars, "am", "cyl")
+#' rnp_2freq(mtcars, "am", "cyl", transpor = TRUE)
 #' }
 #' @author LOPES, J. E
 #' @export
-rnp_2freq <- function(x, y, digits = 4, percents = FALSE){
-  if(missing(x) & missing(y)) {
-    stop("Informe x e y!\n")
-  } else if(missing(y)) {
-    if(!is.null(dim(x))) {
-      stop("x devem ser vetor!\n")
+rnp_2freq <- function(data, x, y = NULL, sortclass = FALSE, transpor = FALSE){
+
+  if(is.null(x) & is.null(y)){
+    stop("Informe ao menos uma variavel para calcular suas frequencias.")
+  } else if(is.null(x)) {
+    stop("Informe a variavel x para calcular suas frequencias.")
+  }
+
+  aux_freq <- function(data, x, y){
+    x <- if(!is.null(x)){
+      dplyr::sym(x)
     }
-    tt <- table(x, deparse.level = 2)
-  } else if (missing(x)){
-    if(!is.null(dim(x))) {
-      stop("y devem ser vetor!\n")
+    y <- if(!is.null(y)){
+      dplyr::sym(y)
     }
-    tt <- table(y, deparse.level = 2)
-  } else {
-    if(!is.null(dim(x)) | !is.null(dim(y))) {
-      stop("x e y devem ser vetor!\n")
+    if(length(as.character(c(x, y))) < 2){
+      data %>%
+        dplyr::group_by({{x}}, {{y}}) %>%
+        dplyr::count(name = "fa", sort = sortclass) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(fr = fa / sum(fa),
+                      faa = cumsum(fr),
+                      fra = cumsum(fa))
+    } else {
+      data %>%
+        dplyr::group_by({{x}}, {{y}}) %>%
+        dplyr::count(name = "fa", sort = sortclass) %>%
+        dplyr::group_by({{x}}) %>%
+        dplyr::mutate(fr = fa / sum(fa),
+                      faa = cumsum(fr),
+                      fra = cumsum(fa))
     }
-    tt <- table(x, y, deparse.level = 2)
   }
-
-  t1 <- stats::addmargins(tt)
-  t1 <- as.matrix(t1)
-  t2 <- t1/max(t1)
-
-  li <- matrix(NA, nrow = nrow(t1), ncol = ncol(t1))
-  for(i in 1:nrow(t1)){
-    li[i, ] <- t1[i,] / max(t1[i,])
-  }
-
-  co <- matrix(NA, nrow = nrow(t1), ncol = ncol(t1))
-  for(j in 1:ncol(t1)){
-    co[,j] <- t1[,j] / max(t1[,j])
-  }
-
-  colnames(li) <- colnames(co) <- colnames(t1)
-  rownames(li) <- rownames(co) <- rownames(t1)
-
-  if(percents){
-    o <- rbind(data.frame(cbind(Tipo = "fa", Classe = as.character(rownames(t1)), as.matrix(t1)),
-                          check.names = FALSE, stringsAsFactors = FALSE),
-               data.frame(cbind(Tipo = "fr", Classe = as.character(rownames(t2)), round(as.matrix(t2), digits = digits)),
-                          check.names = FALSE, stringsAsFactors = FALSE),
-               data.frame(cbind(Tipo = "fr_lin", Classe = as.character(rownames(li)), round(as.matrix(li), digits = digits)),
-                          check.names = FALSE, stringsAsFactors = FALSE),
-               data.frame(cbind(Tipo = "fr_col", Classe = as.character(rownames(co)), round(as.matrix(co), digits = digits)),
-                          check.names = FALSE, stringsAsFactors = FALSE)
-    )
+  if(transpor){
+    aux_freq(data, x, y) %>%
+      tidyr::pivot_longer(cols = c("fa","fr","faa","fra"),
+                          names_to = "est", values_to = "valor")
   } else {
-    o <- rbind(data.frame(cbind(Tipo = "fa", Classe = as.character(rownames(t1)), round(as.matrix(t1), digits = digits)),
-                          check.names = FALSE), stringsAsFactors = FALSE)
+    aux_freq(data, x, y)
   }
-  rownames(o) <- NULL
-  o$Classe <- as.character(o$Classe)
-  o[which(o$Classe == "Sum"), ]$Classe <- "Total"
-  colnames(o)[which(colnames(o) == "Sum")] <- "Total"
-
-  O <- data.frame(sapply(o[,1:2], function(x) as.character(x)),
-                  sapply(o[,-c(1:2)], function(x) as.numeric(as.character(x))),
-                  check.names = FALSE,
-                  stringsAsFactors = FALSE)
-
-  if(percents) {
-    O <- O[order(O$Classe, O$Tipo), ]
-    out <- O[!(O$Classe == "Total" & O$Tipo %in% c("fr_col","fr_lin")), ]
-  } else {
-    out <- O
-  }
-  rownames(out) <- NULL
-  colnames(out)[2] <- "Classe X/Y"
-  return(out)
 }
+
 
 #' Sumario estatistico
 #' @param x vetor numerico de entrada

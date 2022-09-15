@@ -2,33 +2,38 @@
 % Please edit documentation in R/extras.R
 \name{rnp_2freq}
 \alias{rnp_2freq}
-\title{Tabela de frequencias dupla entrada}
+\title{Tabela de frequencias dupla entrada.}
 \usage{
-rnp_2freq(x, y, digits = 4, percents = FALSE)
+rnp_2freq(data, x, y = NULL, sortclass = FALSE, transpor = FALSE)
 }
 \arguments{
-\item{x}{vetor caractere/fator de entrada}
+\item{data}{tabela de dados.}
 
-\item{y}{vetor caractere/fator de entrada}
+\item{x}{nome da variavel x. Obrigatorio.}
 
-\item{digits}{total de digitos decimais na saida}
+\item{y}{nome da variavel y. Pode ser NULL.}
 
-\item{percents}{se TRUE, retorna tambem os percentuais de linha e de colunas.}
+\item{sortclass}{Se TRUE ordena as categorias de x e/ou y.}
+
+\item{transpor}{Se TRUE, faz a transposicao das estatisticas gerando um data.frame vertical.}
 }
 \value{
 data.frame
 }
 \description{
-Tabela de frequencias dupla entrada
+Tabela de frequencias dupla entrada.
 }
 \details{
-faz tabela de dupla entrada com base em dois vetores de entrada.
+faz tabela de dupla entrada com base no dados de entrada.
 }
 \examples{
 \dontrun{
 require(rnpextras)
-data(dm_ies)
-rnp_2freq(dm_ies$DESC_TP_CATEGORIA_ADMINISTRATIVA, dm_ies$DESC_TP_MODALIDADE_ENSINO)
+data(mtcars)
+rnp_2freq(mtcars, "am")
+rnp_2freq(mtcars, "am", transpor = TRUE)
+rnp_2freq(mtcars, "am", "cyl")
+rnp_2freq(mtcars, "am", "cyl", transpor = TRUE)
 }
 }
 \author{

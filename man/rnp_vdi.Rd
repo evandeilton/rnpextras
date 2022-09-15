@@ -36,8 +36,8 @@ Esta estatistica possui otimas propriedades que ajudam a identificar se esta hav
 para os mesmos dados antes e depois ao longo do tempo.
 }
 \examples{
-tbref <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
-tbrec <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
+tbref <- rnp_freq(sample(mtcars$cyl, size = 20))
+tbrec <- rnp_freq(sample(mtcars$cyl, size = 20))
 rnp_vdi(tbref, tbrec, total = TRUE)
 rnp_vdi(tbref, tbrec, total = FALSE)
 }

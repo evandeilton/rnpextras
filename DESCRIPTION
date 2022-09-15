@@ -1,6 +1,6 @@
 Package: rnpextras
 Title: Recursos extras do R na Pratica
-Version: 2.2.3
+Version: 2.2.4
 Authors@R:
     person(given = "Jose E.",
            family = "Lopes",
@@ -13,8 +13,8 @@ LazyData: true
 LazyDataCompression: bzip2
 RoxygenNote: 7.2.1
 Depends: R (>= 2.10)
-Imports: data.table, rio, validaRA, vroom, stringi, DBI, Hmisc, digest, forecast, dbplyr, dplyr, furrr, future, jsonlite, lubridate, magrittr, purrr, readr, stringr, tibble
-Suggests: tidyverse, RCurl, readxl, plyr, testthat, rlang, tidyr
+Imports: data.table, rio, validaRA, vroom, stringi, DBI, Hmisc, digest, forecast, dbplyr, dplyr, furrr, future, jsonlite, lubridate, magrittr, purrr, readr, stringr, tibble, tidyr
+Suggests: tidyverse, RCurl, readxl, plyr, testthat, rlang
 Remotes: github::evandeilton/validaRA
 NeedsCompilation: no
 Packaged: 2021-07-12 21:52:07 UTC; evandeilton

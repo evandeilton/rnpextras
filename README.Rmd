@@ -93,8 +93,8 @@ rnpextras::rnp_correlacao(da[,c("Age","Income","Limit","Balance")])
 ## Tabelas de freqência simples e de dupla entrada
 ```{r}
 rnpextras::rnp_freq(da$Gender)
-rnpextras::rnp_2freq(da$Gender, da$Ethnicity)
-rnpextras::rnp_2freq(da$Gender, da$Ethnicity, percents = TRUE)
+rnpextras::rnp_2freq(da, x = "Gender")
+rnpextras::rnp_2freq(da, x = "Gender", y = "Ethnicity")
 ```
 
 

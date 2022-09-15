@@ -89,7 +89,6 @@ rnp_separa_endereco <- function(end, nespacos = 5, extraregex = NULL) {
   return(O)
 }
 
-
 #' Tabela de frequencias simples
 #'
 #' @author LOPES, J. E.
@@ -150,6 +149,52 @@ rnp_freq <- function(x, digits = 4, percent = FALSE, sortclass = TRUE) {
     ll
   }
   return(as.data.frame(o))
+}
+
+
+#' Tabela de frequencias simples
+#'
+#' @author LOPES, J. E.
+#' @description Calcula estatisticas descritivas de variaveis categoricas como caractere
+#' e fatores. Tambem funciona com numericas com valores repetidos. Como resultado tem-se
+#' frequencias e percentuais simples e acumulados de cada categoria.
+#' Se receber um data.frame ou lista tenta calcular as estatisticas para todas as variaveis da mesma.
+#' Nao existe deduplicacao dos dados.
+#'
+#' @param x variavel de entrada
+#' @param sortclass ordenacao das classes.
+#' @return data.frame com as estaisticas frequencia absoluta (fa), relativa (fr)
+#' absoluta acumulada (faa) e relativa acumulada (fra)
+#' @importFrom dplyr group_by count ungroup mutate
+#' @importFrom purrr set_names map_df
+#' @export
+#' @examples
+#' rnp_freq(mtcars$cyl)
+#' rnp_freq(mtcars)
+rnp_freq2 <- function(x, sortclass = TRUE){
+  if(all(is.na(x))){
+    stop(paste("Todas as classes da variavel", deparse(substitute(x)), "estao missing!\n"))
+  }
+
+  fn_aux <- function(x, sortclass){
+    data.frame(classe = as.character(x)) %>%
+      dplyr::group_by(classe) %>%
+      dplyr::count(classe, name = "fa", sort = sortclass) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(fr = fa / sum(fa),
+                    faa = cumsum(fr),
+                    fra = cumsum(fa))
+  }
+
+  o <- if(is.null(dim(x))){
+    fn_aux(x = x, sortclass = sortclass)
+  } else {
+    nm <- colnames(x)
+    as.list(x) %>%
+      purrr::set_names(., nm = nm) %>%
+      purrr::map_df(.f = fn_aux, sortclass = sortclass, .id = "variavel")
+  }
+  return(o)
 }
 
 #' Tabula dados bivariados
@@ -607,8 +652,8 @@ rnp_verifica_cep <- function(base, cep){
 #' @import dplyr
 #' @author LOPES, J. E.
 #' @examples
-#' tbref <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
-#' tbrec <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
+#' tbref <- rnp_freq(sample(mtcars$cyl, size = 20))
+#' tbrec <- rnp_freq(sample(mtcars$cyl, size = 20))
 #' rnp_vdi(tbref, tbrec, total = TRUE)
 #' rnp_vdi(tbref, tbrec, total = FALSE)
 #' @export
@@ -672,8 +717,8 @@ rnp_vdi <- function(tbref, tbrec, max_cat = 50, digits = 4, total = FALSE, sortc
 #' @import dplyr
 #' @author LOPES, J. E.
 #' @examples
-#' tbref <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
-#' tbrec <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
+#' tbref <- rnp_freq(sample(mtcars$cyl, size = 20))
+#' tbrec <- rnp_freq(sample(mtcars$cyl, size = 20))
 #' rnp_vdi2(tbref, tbrec, total = TRUE)
 #' rnp_vdi2(tbref, tbrec, total = FALSE)
 #' @export
@@ -755,8 +800,8 @@ rnp_vdi2 <- function(tbref, tbrec, max_cat = 50, digits = 4, ponderado = FALSE, 
 #' @import dplyr
 #' @author LOPES, J. E.
 #' @examples
-#' tbref <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
-#' tbrec <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
+#' tbref <- rnp_freq(sample(mtcars$cyl, size = 20))
+#' tbrec <- rnp_freq(sample(mtcars$cyl, size = 20))
 #' rnp_ksp(tbref, tbrec, total = TRUE)
 #' rnp_ksp(tbref, tbrec, total = FALSE)
 #' @export

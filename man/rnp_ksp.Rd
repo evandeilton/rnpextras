@@ -39,8 +39,8 @@ para os mesmos dados antes e depois ao longo do tempo. A interpretacao e oposta 
 Calculamos o KSP como $max(abs(freq_relativa_ac_p1 - freq_relativa_ac_p2))$
 }
 \examples{
-tbref <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
-tbrec <- rnp_freq(sample(mtcars$cyl, size = 20), digits = 6)
+tbref <- rnp_freq(sample(mtcars$cyl, size = 20))
+tbrec <- rnp_freq(sample(mtcars$cyl, size = 20))
 rnp_ksp(tbref, tbrec, total = TRUE)
 rnp_ksp(tbref, tbrec, total = FALSE)
 }

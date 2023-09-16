@@ -50,7 +50,7 @@ ao SQL Server. Se os dados sao do tipo charactere com mais de 7999 caracteres
 o formato SQL sera \code{VARCHAR(MAX)}. O processo de scan dos dados pode ser lento
 em tabelas grandes em linhas ou colunas. Para tentar melhorar a performance nestes
 casos, foi inserido na funcao a possibilidade de rodar em paralelo com apoio do
-pacote future. Veja \code{\link[future]{multiprocess}} para mais detalhes.
+pacote future. Veja \code{\link[future]{future}} para mais detalhes.
 }
 \examples{
 \dontrun{

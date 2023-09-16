@@ -11,7 +11,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: bzip2
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Depends: R (>= 2.10)
 Imports: data.table, rio, validaRA, vroom, stringi, DBI, Hmisc, digest, forecast, dbplyr, dplyr, furrr, future, jsonlite, lubridate, magrittr, purrr, readr, stringr, tibble, tidyr
 Suggests: tidyverse, RCurl, readxl, plyr, testthat, rlang

@@ -1,8 +1,8 @@
-pandoc: 2.14.2
-pkgdown: 2.0.6
+pandoc: 2.19.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-09-15T22:40Z
+last_built: 2023-09-16T14:55Z
 urls:
   reference: https://evandeilton.github.io/rnpextras/reference
   article: https://evandeilton.github.io/rnpextras/articles

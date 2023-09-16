@@ -1,6 +1,6 @@
 Package: rnpextras
 Title: Recursos extras do R na Pratica
-Version: 2.2.4
+Version: 2.2.5
 Authors@R:
     person(given = "Jose E.",
            family = "Lopes",

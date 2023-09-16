@@ -2568,7 +2568,7 @@ numeric_precision_and_scale <- function(x) {
 #' o formato SQL sera \code{VARCHAR(MAX)}. O processo de scan dos dados pode ser lento
 #' em tabelas grandes em linhas ou colunas. Para tentar melhorar a performance nestes
 #' casos, foi inserido na funcao a possibilidade de rodar em paralelo com apoio do
-#' pacote future. Veja \code{\link[future]{multiprocess}} para mais detalhes.
+#' pacote future. Veja \code{\link[future]{multicore}} para mais detalhes.
 #' @param con Conexao criada via \code{\link[DBI]{dbConnect}}.
 #' @param data Objeto para obter tipos dos dados.
 #' @param parallel Se TRUE, ativa processamento em paralelo via future. Veja mais em \code{\link[future]{plan}}.
@@ -2580,7 +2580,7 @@ numeric_precision_and_scale <- function(x) {
 #' @importFrom utils timestamp memory.limit
 #' @importFrom dplyr tibble as_tibble all_of select left_join mutate case_when transmute
 #' @importFrom stringr str_replace_all
-#' @importFrom future plan sequential availableCores multiprocess
+#' @importFrom future plan sequential availableCores multicore
 #' @importFrom purrr map_chr
 #' @importFrom furrr future_map_dbl future_map_chr future_map
 #' @examples \dontrun{
@@ -2657,7 +2657,7 @@ rnp_db_types <- function(con, data, sample_size = Inf, parallel = FALSE, aloc_cp
   if(parallel){
     # Compromete aloc_cpu% do CPU para a operacao
     n_workers <- ceiling(aloc_cpu*future::availableCores())
-    future::plan(future::multiprocess(), workers = n_workers)
+    future::plan(future::multicore(), workers = n_workers)
   }
 
   ## Detecta tipos dos dados considerando a codificacao do banco, obtido via con
